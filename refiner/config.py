@@ -57,7 +57,7 @@ class Settings(BaseSettings):
     )
 
     IPFS_GATEWAY_URL: str = Field(
-        default="https://dfusion-social-lens.mypinata.cloud/ipfs",
+        default="https://gateway.pinata.cloud/ipfs",
         description="IPFS gateway URL for accessing uploaded files"
     )
 

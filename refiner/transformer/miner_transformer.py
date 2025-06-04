@@ -235,10 +235,10 @@ class MinerTransformer(DataTransformer):
                 # Convert metadata to bytes for storage
                 if media_binary:
                     # If we have binary media, store it directly
-                    content_data = media_binary if isinstance(media_binary, bytes) else str(media_binary).encode('utf-8')
+                    content_data = media_binary
                 else:
                     # Otherwise store the JSON metadata as bytes
-                    content_data = metadata_json.encode('utf-8') if metadata_json else None
+                    content_data = None
 
                 # Create ChatMessage record
                 message = ChatMessages(

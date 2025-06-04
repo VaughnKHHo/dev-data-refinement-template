@@ -172,17 +172,25 @@ class MinerTransformer(DataTransformer):
                                         # Extract caption if available
                                         if hasattr(msg_content.media, 'caption') and msg_content.media.caption:
                                             content = msg_content.media.caption
+                                        elif hasattr(msg_content, 'message') and msg_content.message:
+                                            content = msg_content.message
                                         else:
                                             content = "Photo attachment"
 
-                                        # Extract photo data
+                                        # Extract photo data - handle Buffer format
                                         if hasattr(photo, 'sizes') and photo.sizes:
                                             for size in photo.sizes:
                                                 if hasattr(size, 'bytes') and size.bytes:
-                                                    media_binary = size.bytes
-                                                    media_found = True
-                                                    logging.info(f"Extracted photo data for message {msg_content.id}")
-                                                    break
+                                                    # Handle Buffer object
+                                                    if isinstance(size.bytes, dict) and size.bytes.get('type') == "Buffer":
+                                                        media_binary = bytes(size.bytes['data'])
+                                                        media_found = True
+                                                        break
+                                                    # Handle direct bytes
+                                                    elif isinstance(size.bytes, bytes):
+                                                        media_binary = size.bytes
+                                                        media_found = True
+                                                        break
                                 except Exception as e:
                                     logging.warning(f"Error processing photo: {e}")
                                     content = "Photo attachment"
@@ -191,6 +199,7 @@ class MinerTransformer(DataTransformer):
                             else:
                                 content_type = "media"
                                 content = f"Media: {getattr(msg_content.media, 'className', 'unknown type')}"
+                                logging.warning(f"Unhandled media type: {msg_content.media.className}")
 
                 elif msg_content.className == "MessageService":
                     content_type = "service"

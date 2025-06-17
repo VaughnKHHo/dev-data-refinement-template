@@ -78,6 +78,7 @@ class MinerTransformer(DataTransformer):
                     participants.add(msg.fromId.userId)
                 if hasattr(msg, 'fromId') and msg.fromId and hasattr(msg.fromId, 'channelId'):
                     participants.add(msg.fromId.channelId)
+                #
                 if hasattr(msg, 'fromId') and msg.fromId and hasattr(msg.fromId, 'chatId'):
                     participants.add(msg.fromId.chatId)
 
@@ -108,6 +109,7 @@ class MinerTransformer(DataTransformer):
                     sender_id = str(msg_content.fromId.userId)
                 elif hasattr(msg_content, 'fromId') and msg_content.fromId and hasattr(msg_content.fromId, 'channelId'):
                     sender_id = str(msg_content.fromId.channelId)
+                #
                 elif hasattr(msg_content, 'fromId') and msg_content.fromId and hasattr(msg_content.fromId, 'chatId'):
                     sender_id = str(msg_content.fromId.chatId)
 
